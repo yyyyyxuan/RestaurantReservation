@@ -1,0 +1,66 @@
+﻿@page "/restaurant/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+@attribute [Authorize]
+
+
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<a href="restaurant/list" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to restaurants
+</a>
+<br />
+<br />
+<FormComponent restaurant="restaurant" Disabled="true" />
+@if (_currentUserRole == "CustomerUser"|_currentUserRole=="Administrator")
+{
+    <div>
+        <a href="/reservation/create/@id">
+            <span class="oi oi-plus"></span>Make a booking
+        </a>
+    </div>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    Restaurant restaurant = new Restaurant();
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+    protected async override Task OnParametersSetAsync()
+    {
+        restaurant = await
+        _client.GetFromJsonAsync<Restaurant>($"{Endpoints.RestaurantEndpoint}/{id}");
+
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+}

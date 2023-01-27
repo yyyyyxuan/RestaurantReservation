@@ -1,0 +1,191 @@
+﻿@page "/reservation/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
+
+
+
+<a href="start" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to menu
+</a>
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Reservations: </h3>
+<p>UserId: @_currentUserId</p>
+<div>Display list of reservations made by customer</div>
+
+@if (Reservation == null)
+{
+    <div class="alert alert-info">Loading Reservation...</div>
+}
+else
+{
+
+
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Restaurant Name</th>
+                <th>Date</th>
+                <th>TimeSlot</th>
+                <th>Pax</th>
+                @if (_currentUserRole == "Administrator")
+                {
+                    <th>UserName</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (_currentUserRole == "CustomerUser")
+            {
+                foreach (var reservation in Reservation)
+                {
+                    @if (reservation.UserId == _currentUserId)
+                    {
+                        <tr>
+                            <td>@reservation.RestaurantName </td>
+                            <td>@reservation.ReservationDate.ToShortDateString()</td>
+                            <td>@reservation.TimeSlot</td>
+                            <td>@reservation.Pax</td>
+                            <td>
+                                <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
+                                    <span class="oi oi-pencil"></span>
+                                </a>
+                                <a href="/reservation/view/@reservation.Id" class="btn btn-info">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() => Delete(reservation.Id))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </td>
+                        </tr>
+
+
+                    }
+                }
+            }
+            @if (_currentUserRole == "Administrator")
+            {
+                foreach (var reservation in Reservation)
+                {
+                    <tr>
+                        <td>@reservation.RestaurantName </td>
+                        <td>@reservation.ReservationDate.ToShortDateString()</td>
+                        <td>@reservation.TimeSlot</td>
+                        <td>@reservation.Pax</td>
+                        <td>@reservation.UserName</td>
+                        <td>
+                            <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <a href="/reservation/view/@reservation.Id" class="btn btn-info">
+                                <span class="oi oi-book"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(() => Delete(reservation.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    </tr>
+
+                }
+            }
+            @if (_currentUserRole == "RestaurantUser")
+            {
+                @foreach (var reservation in Reservation)
+                {
+                    @foreach (var restaurant in Restaurant)
+                    {
+                        @if (restaurant.Id == reservation.Id & restaurant.UserId == _currentUserId)
+                        {
+                            <tr>
+                                <td>@reservation.RestaurantName </td>
+                                <td>@reservation.ReservationDate.ToShortDateString()</td>
+                                <td>@reservation.TimeSlot</td>
+                                <td>@reservation.Pax</td>
+                                <td>
+                                    <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
+                                        <span class="oi oi-pencil"></span>
+                                    </a>
+                                    <a href="/reservation/view/@reservation.Id" class="btn btn-info">
+                                        <span class="oi oi-book"></span>
+                                    </a>
+                                    <button class="btn btn-danger" @onclick="@(() => Delete(reservation.Id))">
+                                        <span class="oi oi-delete"></span>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                }
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    private List<Reservation> Reservation;
+    private List<Restaurant> Restaurant;
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+        _interceptor.MonitorEvent();
+        Reservation = await _client.GetFromJsonAsync<List<Reservation>>($"{Endpoints.ReservationEndpoint}");
+        Restaurant = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+
+    }
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+    }
+    async Task Delete(int reservationId)
+    {
+        var reservation = Reservation.First(q => q.Id == reservationId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete reservation {reservation.Id}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.ReservationEndpoint}/{reservationId}");
+            await OnInitializedAsync();
+        }
+    }
+}

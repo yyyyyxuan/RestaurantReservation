@@ -1,0 +1,106 @@
+﻿@page "/spotlight/createitem/{id:int}"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+@attribute [Authorize]
+<a href="spotlight" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to spotlight
+</a>
+<br/>
+
+@if (Spotlights == null)
+{
+    <div>Loading page...</div>
+}
+else
+{
+    foreach (var spotlight in Spotlights)
+    {
+        if (spotlight.Id == id)
+        {
+            <div>Spotlight header: @spotlight.SpotlightHeader</div>
+        }
+    }
+}
+@if (Restaurants == null)
+{
+    <div>Loading restaurants...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Restaurants</th>
+                <th>Restaurant ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var restaurant in Restaurants)
+            {
+                <tr>
+
+                    <td>@restaurant.Name</td>
+                    <td>@restaurant.Id</td>
+                    <td>
+                        <div>Tests</div>
+
+                        <ItemComponent ButtonText="Add"spotlightitem="spotlightitem" OnValidSubmit="@(() => CreateSpotlightItem(restaurant.Id))" />
+                        @foreach (var spotlightitem in SpotlightItems)
+                        {
+
+                            if (spotlightitem.SpotlightId == id & spotlightitem.RestaurantId == restaurant.Id)
+                            {
+                                <button class="btn btn-danger" @onclick="@(() => Delete(spotlightitem.Id))" >
+                                    Remove restaurant
+                                </button>
+                                break;
+
+                            }
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    [Parameter] public int id { get; set; }
+    SpotlightItem spotlightitem = new SpotlightItem();
+
+    private List<SpotlightItem> SpotlightItems;
+    private List<Restaurant> Restaurants;
+    private List<Spotlight> Spotlights;
+    protected async override Task OnInitializedAsync()
+    {
+        spotlightitem.ExpireDate = DateTime.Now;
+        SpotlightItems = await _client.GetFromJsonAsync<List<SpotlightItem>>($"{Endpoints.SpotlightItemEndpoint}");
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        Spotlights = await _client.GetFromJsonAsync<List<Spotlight>>($"{Endpoints.SpotlightEndpoint}");
+    }
+
+    private async Task CreateSpotlightItem(int restaurantID)
+    {
+        spotlightitem.RestaurantId = restaurantID;
+        spotlightitem.SpotlightId = id;
+        await _client.PostAsJsonAsync(Endpoints.SpotlightItemEndpoint, spotlightitem);
+        await OnInitializedAsync();
+
+    }
+    async Task Delete(int spotlightitemId)
+    {
+        var spotlightitem = SpotlightItems.First(q => q.Id == spotlightitemId);
+        await _client.DeleteAsync($"{Endpoints.SpotlightItemEndpoint}/{spotlightitemId}");
+        await OnInitializedAsync();
+
+    }
+
+
+
+}

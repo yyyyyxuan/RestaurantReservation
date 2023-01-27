@@ -1,0 +1,200 @@
+﻿@page "/spotlight/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+@inject NavigationManager _navManager
+
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Spotlights: </h3>
+<br />
+<br />
+<a href="start" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to menu
+</a>
+<br/>
+<br />
+@if (_currentUserRole == "Administrator")
+{
+
+    <a href="/spotlight/create" class="btn btn-secondary">
+        <span class="oi oi-plus"></span>
+        Create New Spotlight
+    </a>
+    <br />
+    <br />
+}
+@if (Spotlights == null)
+{
+    <div class="alert alert-info">Loading spotlight...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Spotlight Header</th>
+                <th>Restaurants</th>
+                <th>Links</th>
+                @if (_currentUserRole == "Administrator")
+                {
+                    <th>Expiry Date</th>
+                    <th>Action</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var spotlight in Spotlights)
+            {
+                <tr>
+                    <td>
+                        @spotlight.SpotlightHeader
+                    </td>
+                    <td>
+                        @if (SpotlightItems == null)
+                        {
+                            <a href="spotlight/createitem/@spotlight.Id">No restaurants added</a>
+                        }
+                        else
+                        {
+                            foreach (var spotlightitem in SpotlightItems)
+                            {
+                                @if (spotlightitem.SpotlightId == spotlight.Id)
+                                {
+                                    foreach (var restaurant in Restaurants)
+                                    {
+                                        if (spotlightitem.RestaurantId == restaurant.Id)
+                                        {
+                                            <div>@restaurant.Name</div>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    </td>
+                    <td>
+
+                        @foreach (var spotlightitem in SpotlightItems)
+                        {
+                            @if (spotlightitem.SpotlightId == spotlight.Id)
+                            {
+                                foreach (var restaurant in Restaurants)
+                                {
+                                    if (spotlightitem.RestaurantId == restaurant.Id)
+                                    {
+                                        <div>
+                                            <a href="restaurant/view/@restaurant.Id">
+                                                <span class="oi oi-plus"></span>View restaurant
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+
+                    </td>
+                    <td>
+                        @if (_currentUserRole == "Administrator")
+                        {
+                            @foreach (var spotlightitem in SpotlightItems)
+                            {
+                                @if (spotlightitem.SpotlightId == spotlight.Id)
+                                {
+                                    foreach (var restaurant in Restaurants)
+                                    {
+                                        if (spotlightitem.RestaurantId == restaurant.Id)
+                                        {
+                                            @if (spotlightitem.ExpireDate > DateTime.Today)
+                                            {
+                                                
+                                                <div>@spotlightitem.ExpireDate.ToShortDateString()</div>
+                                            }
+                                            else
+                                            {
+                                                
+                                                <div><a href="spotlight/edit/@spotlightitem.Id">Advert Expired, click here to update</a></div>
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </td>
+
+                    @if (_currentUserRole == "Administrator")
+                    {
+                        <td>
+                            <a href="/spotlight/createitem/@spotlight.Id" class="btn btn-warning">
+                                <span class="oi oi-pencil"></span>
+                            </a>
+                            <button class="btn btn-danger" @onclick="@(() => Delete(spotlight.Id))">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<AppUser> AppUsers;
+    private List<Spotlight> Spotlights;
+    private List<SpotlightItem> SpotlightItems;
+    private List<Restaurant> Restaurants;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+    
+    protected async override Task OnInitializedAsync()
+    {
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        AppUsers = await _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        Spotlights = await _client.GetFromJsonAsync<List<Spotlight>>($"{Endpoints.SpotlightEndpoint}");
+        SpotlightItems = await _client.GetFromJsonAsync<List<SpotlightItem>>($"{Endpoints.SpotlightItemEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+    async Task Delete(int spotlightId)
+    {
+        var spotlight = Spotlights.First(q => q.Id == spotlightId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {spotlight.SpotlightHeader}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.SpotlightEndpoint}/{spotlightId}");
+            await OnInitializedAsync();
+        }
+    }
+    
+
+
+}

@@ -1,0 +1,16 @@
+﻿
+<EditForm Model="@spotlightitem" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationMessage For="@(() => spotlightitem.ExpireDate)" />
+    <InputDate @bind-Value="@spotlightitem.ExpireDate" class="form-control" />
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText restaurant
+    </button>
+    <ValidationSummary />
+</EditForm>
+@code {
+    [Parameter] public SpotlightItem spotlightitem { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+   
+}

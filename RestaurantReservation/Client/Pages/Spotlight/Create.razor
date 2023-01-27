@@ -1,0 +1,53 @@
+﻿@page "/spotlight/create/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+@attribute [Authorize]
+
+<a href="spotlight" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to spotlights
+</a>
+<br />
+<div>
+    <EditForm Model="@spotlight" OnValidSubmit="CreateSpotlight">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Spotlight Header: </label>
+            <div>
+                <InputText @bind-Value="spotlight.SpotlightHeader" class="form-control"></InputText>
+                <ValidationMessage For="@(() => spotlight.SpotlightHeader)" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">
+            Create spotlight
+        </button>
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+
+
+@code {
+    Spotlight spotlight = new Spotlight();
+    private List<Restaurant> Restaurants;
+    private List<Spotlight> Spotlights;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        Spotlights = await _client.GetFromJsonAsync<List<Spotlight>>($"{Endpoints.SpotlightEndpoint}");
+    }
+
+    private async Task CreateSpotlight()
+    {
+        await _client.PostAsJsonAsync(Endpoints.SpotlightEndpoint, spotlight);
+        _navManager.NavigateTo("/spotlight/");
+    }
+
+
+
+}
+
+
+

@@ -1,0 +1,76 @@
+﻿@page "/reservation/create/{id:int}"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+@attribute [Authorize]
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<a href="restaurant/view/@id" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to restaurant
+</a>
+<br />
+<br />
+<FormComponent reservation="reservation" OnValidSubmit="@CreateReservation" ButtonText="Submit"/>
+
+
+@code {
+    [Parameter] public int id { get; set; }
+    Reservation reservation = new Reservation();
+    private List<Restaurant> Restaurants;
+
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+        
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        reservation.ReservationDate = DateTime.Now;
+        foreach (var restaurant in Restaurants)
+        {
+            if (restaurant.Id.Equals(id))
+            {
+                reservation.RestaurantName = restaurant.Name;
+            }
+        }
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+        reservation.RestaurantId = id;
+        reservation.UserId = _currentUserId;
+        reservation.UserName = _currentUserName;
+    }
+    private async Task CreateReservation()
+    {
+        await _client.PostAsJsonAsync(Endpoints.ReservationEndpoint, reservation);
+        _navManager.NavigateTo("/reservation/");
+    }
+}

@@ -1,0 +1,104 @@
+﻿@page "/restaurant/list"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<a href="start" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to menu
+</a>
+<br />
+<br />
+@if (Restaurants == null)
+{
+    <div class="alert alert-info">Loading Restaurant...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Restaurant Name</th>
+                <th>Restaurant Description</th>
+                @if (_currentUserRole == "Administrator")
+                {
+                    <th>Restaurant username</th>
+                }
+                @if (_currentUserRole == "CustomerUser" | _currentUserRole == "Administrator")
+                {
+                    <th>Actions</th>
+                }
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var restaurant in Restaurants)
+            {
+            <tr>
+                <td>@restaurant.Name</td>
+                <td>@restaurant.Description</td>
+                @if (_currentUserRole == "Administrator")
+                {
+                    <td>@restaurant.UserName</td>
+                }
+                @if (_currentUserRole == "CustomerUser" | _currentUserRole == "Administrator")
+                {
+                    <td>
+                        <a href="/restaurant/view/@restaurant.Id" class="btn btn-warning">
+                            <span class="oi oi-plus"></span>View Restaurant
+                        </a>
+                    </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    
+    private List<Restaurant> Restaurants;
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+}

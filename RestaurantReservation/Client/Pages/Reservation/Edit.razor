@@ -1,0 +1,22 @@
+﻿@page "/reservation/edit/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<a href="reservation" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to reservation list
+</a>
+<FormComponent ButtonText="Update" OnValidSubmit="EditReservation" reservation="reservation" />
+@code {
+    [Parameter] public int id { get; set; }
+    Reservation reservation = new Reservation();
+    protected async override Task OnParametersSetAsync()
+    {
+        reservation = await _client.GetFromJsonAsync<Reservation>($"{Endpoints.ReservationEndpoint}/{id}");
+    }
+    async Task EditReservation()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.ReservationEndpoint}/{id}", reservation);
+        _navManager.NavigateTo("/reservation/");
+    }
+}

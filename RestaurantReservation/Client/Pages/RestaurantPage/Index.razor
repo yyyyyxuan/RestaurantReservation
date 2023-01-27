@@ -1,0 +1,161 @@
+﻿@page "/restaurant/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<a href="start" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to menu
+</a>
+<br />
+<br />
+<h3>Restaurants: </h3>
+@switch (_currentUserRole)
+{
+    case "CustomerUser":
+        createbutton = false;
+        break;
+    case "Administrator":
+        createbutton = true;
+        break;
+    case "RestaurantUser":
+        @foreach (var restaurant in Restaurants)
+        {
+            @if (restaurant.UserId == _currentUserId)
+            {
+                createbutton = false;
+                break;
+            }
+            else
+            {
+                createbutton = true;
+            }
+        }
+        break;
+    default:
+       createbutton = false;
+       break;
+}
+
+
+@if (createbutton == true)
+{
+    <a href="/restaurant/create" class="btn btn-secondary">
+        <span class="oi oi-plus"></span>
+        Create New Restaurant
+    </a>
+    <br />
+    <br />
+}
+
+
+
+
+@if (Restaurants == null)
+{
+    <div class="alert alert-info">Loading Restaurant...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                @if (_currentUserRole == "Administrator")
+                {
+                    <th>User Name</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var restaurant in Restaurants)
+            {
+              
+                @if (restaurant.UserId == _currentUserId | _currentUserRole == "Administrator")
+                {
+
+                    {
+                        <tr>
+                            <td>@restaurant.Name</td>
+                            <td>@restaurant.Description</td>
+                            @if (_currentUserRole == "Administrator") 
+                            {
+                                <td>@restaurant.UserName</td>
+                            }
+                            <td>
+                                <a href="/restaurant/edit/@restaurant.Id" class="btn btn-warning">
+                                    <span class="oi oi-pencil"></span>
+                                </a>
+                                <a href="/restaurant/view/@restaurant.Id" class="btn btn-info">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() => Delete(restaurant.Id))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Boolean createbutton;//logic whether create button should exist or not
+    private List<Restaurant> Restaurants;
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+        createbutton = false;
+        Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+    async Task Delete(int restaurantId)
+    {
+        var restaurant = Restaurants.First(q => q.Id == restaurantId);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {restaurant.Name}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.RestaurantEndpoint}/{restaurantId}");
+            await OnInitializedAsync();
+        }
+    }
+}

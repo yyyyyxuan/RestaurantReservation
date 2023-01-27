@@ -1,0 +1,61 @@
+﻿
+<EditForm Model="@reservation" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <fieldset disabled="@Disabled">
+        <div class="formgroup">
+            <label>Date: </label>
+            <div>
+                <div>
+                    <InputDate @bind-Value="@reservation.ReservationDate" class="form-control" />
+                    <ValidationMessage For="@(() => reservation.ReservationDate)" />
+                </div>
+            </div>
+        </div>
+        <div class="formgroup">
+            <label>Pax: </label>
+            <div>
+                <InputSelect @bind-Value="@reservation.Pax" class="form-control">
+                    <option value="" selected disabled hidden>Select Pax</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => reservation.Pax)" />
+            </div>
+        </div>
+        <div class="formgroup">
+            <label>Timeslot: </label>
+            <div>
+                <div>
+                    <InputSelect @bind-Value="@reservation.TimeSlot" class="form-control">
+                        <option value="" selected disabled hidden>Select Timeslot</option>
+                        <option value="0800-1000">0800-1000</option>
+                        <option value="1000-1200">1000-1200</option>
+                        <option value="1200-1400">1200-1400</option>
+                        <option value="1400-1600">1400-1600</option>
+                        <option value="1800-2000">1800-2000</option>
+                    </InputSelect>
+                    <ValidationMessage For="@(() => reservation.TimeSlot)" />
+                </div>
+            </div>
+        </div>
+        <br />
+    </fieldset>
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success" btn-block>
+            @ButtonText
+        </button>
+    }
+</EditForm>
+@code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Reservation reservation { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}
