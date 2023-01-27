@@ -1,0 +1,75 @@
+﻿@page "/start/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<div>Main menu</div>
+<div>
+    <a href="restaurant/list">View restaurants</a>
+</div>
+
+<div>
+    <a href="reservation">Manage Reservations</a>
+</div>
+<div>
+    <a href="spotlight">Spotlights</a>
+</div>
+@if (_currentUserRole == "Administrator")
+{
+    <div>
+        <a href="accounts">Account Page</a>
+    </div>
+}
+@if (_currentUserRole == "Administrator" ^ _currentUserRole == "RestaurantUser")
+{
+<div>
+    <a href="restaurant">Manage Restaurant Page</a>
+</div>
+}
+
+
+@code {
+
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserRole;
+    private string _currentUserName;
+
+    protected async override Task OnInitializedAsync()
+    {
+
+
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            _currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+}
