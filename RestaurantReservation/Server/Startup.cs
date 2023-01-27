@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using RestaurantReservation.Server.Data;
 using RestaurantReservation.Server.IRepository;
 using RestaurantReservation.Server.Models;
 using RestaurantReservation.Server.Repository;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
 namespace RestaurantReservation.Server
@@ -31,20 +33,26 @@ namespace RestaurantReservation.Server
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("Adminstrator");
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
