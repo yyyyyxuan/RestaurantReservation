@@ -1,0 +1,104 @@
+﻿@page "/accounts"
+
+@inject HttpClient _client
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime js
+@attribute [Authorize]
+<h3>Admin Panel</h3>
+
+
+@if (_claims.Count() > 0)
+{
+    <ul>
+        @foreach (var claim in _claims)
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    </ul>
+}
+<p>Id: @_currentUserId</p>
+<p>Name: @_currentUserName</p>
+<p>Role: @_currentUserRole</p>
+<div>Name: @_currentUserName</div>
+@if (AppUsers == null)
+{
+    <div class="alert alert‐info">Loading Accounts...</div>
+}
+else
+{
+    <table class="table table‐responsive">
+        <thead>
+            <tr>
+                <th>Account Id</th>
+                <th>Email</th>
+                <th>Contant Number</th>
+                <th>User Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var appUser in AppUsers)
+            {
+                <tr>
+                    <td>@appUser.Id</td>
+                    <td>@appUser.Email</td>
+                    <td>@appUser.PhoneNumber</td>
+                    <td>@appUser.UserName</td>                
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<AppUser> AppUsers;
+    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
+    private string _currentUserId;
+    private string _currentUserName;
+    private string _currentUserRole;
+    protected async override Task OnInitializedAsync()
+    {
+        AppUsers = await
+        _client.GetFromJsonAsync<List<AppUser>>($"{Endpoints.AccountsEndpoint}");
+        var authState = await
+        AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _claims = user.Claims;
+            //_currentUserName = user.Identity.Name;
+            if (_claims.Count() > 0)
+            {
+                foreach (var claim in _claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        _currentUserId = claim.Value;
+                        continue;
+                    }
+                    if (claim.Type == "name")
+                    {
+                        _currentUserName = claim.Value;
+                        continue;
+                    }
+                }
+            }
+        }
+        if (_currentUserId != String.Empty)
+        {
+            _currentUserRole = await
+            _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
+        }
+    }
+    async Task Delete(string userID)
+    {
+        var appuser = AppUsers.First(q => q.Id == userID);
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {appuser.UserName}?");
+        if (confirm)
+        {
+            await _client.DeleteAsync($"{Endpoints.AccountsEndpoint}/{userID}");
+            await OnInitializedAsync();
+        }
+    }
+
+}
