@@ -1,7 +1,18 @@
 ﻿@page "/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@inject NavigationManager _navManager
+<h1>Home Page</h1>
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+    <Authorized>
+        @{ _navManager.NavigateTo("/start/");}
+    </Authorized>
+    <NotAuthorized>
+        <div class="standard">Please login to start using service</div>
+    </NotAuthorized>
+</AuthorizeView>
 
-Welcome to your new app.
+@code {
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+}
