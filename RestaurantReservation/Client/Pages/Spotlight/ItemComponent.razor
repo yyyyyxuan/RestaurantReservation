@@ -1,9 +1,17 @@
-﻿
+﻿<style>
+    #feature {
+        position: absolute;
+        width: 150px;
+        height: 33px;
+        text-align: center;
+    }
+</style>
 <EditForm Model="@spotlightitem" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationMessage For="@(() => spotlightitem.ExpireDate)" />
-    <InputDate @bind-Value="@spotlightitem.ExpireDate" class="form-control" />
-    <button type="submit" class="btn btn-success btn-block">
+    <InputDate id="style1" @bind-Value="@spotlightitem.ExpireDate" class="form-control" />
+    <br />
+    <button id="feature" type="submit" class="btn btn-success btn-block">
         @ButtonText restaurant
     </button>
     <ValidationSummary />

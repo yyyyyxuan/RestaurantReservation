@@ -3,18 +3,25 @@
 @inject NavigationManager _navManager
 @attribute [Authorize]
 
-
 @using System.Security.Claims
 @using RestaurantReservation.Client.Model
 @inject AuthenticationStateProvider AuthenticationStateProvider
-<a href="restaurant/list" class="btn btn-secondary">
+
+
+<h1>@restaurant.Name</h1>
+<button onclick="history.back()" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Go Back
+</button>
+<a href="start" class="btn btn-secondary">
     <span class="oi oi oi-arrow-left"></span>
     Back to restaurants
 </a>
 <br />
 <br />
 <FormComponent restaurant="restaurant" Disabled="true" />
-@if (_currentUserRole == "CustomerUser"|_currentUserRole=="Administrator")
+
+@if (_currentUserRole == "CustomerUser" | _currentUserRole == "Administrator")
 {
     <div>
         <a href="/reservation/create/@id">
@@ -31,8 +38,10 @@
     private string _currentUserId;
     private string _currentUserRole;
     private string _currentUserName;
+
     protected async override Task OnParametersSetAsync()
     {
+        base.OnInitialized();
         restaurant = await
         _client.GetFromJsonAsync<Restaurant>($"{Endpoints.RestaurantEndpoint}/{id}");
 
@@ -63,4 +72,5 @@
             _client.GetStringAsync($"{Endpoints.AccountsEndpoint}/{_currentUserId}");
         }
     }
+  
 }

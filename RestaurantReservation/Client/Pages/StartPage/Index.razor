@@ -7,29 +7,39 @@
 @using RestaurantReservation.Client.Model
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-<div>Main menu</div>
+<style>
+    div{
+        text-align: center;
+    }
+</style>
+<h1>Main Menu</h1>
+<hr />
+<br />
 <div>
-    <a href="restaurant/list">View restaurants</a>
+    <a href="restaurant/list" class="btn btn-primary" >View restaurants</a>
 </div>
-
+<br />
 <div>
-    <a href="reservation">Manage Reservations</a>
+    <a href="reservation" class="btn btn-primary" >Manage Reservations</a>
 </div>
+<br />
 <div>
-    <a href="spotlight">Spotlights</a>
+    <a href="spotlight" class="btn btn-primary" >Spotlights</a>
 </div>
+<br />
 @if (_currentUserRole == "Administrator")
 {
     <div>
-        <a href="accounts">Account Page</a>
+        <a href="accounts" class="btn btn-primary">Account Page</a>
     </div>
+    <br/>
 }
 @if (_currentUserRole == "Administrator" ^ _currentUserRole == "RestaurantUser")
 {
 <div>
-    <a href="restaurant">Manage Restaurant Page</a>
+    <a href="restaurant" class="btn btn-primary">Manage Restaurant Page</a>
 </div>
+<br/>
 }
 
 

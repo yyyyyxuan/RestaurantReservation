@@ -31,7 +31,9 @@ namespace RestaurantReservation.Client
 
             builder.Services.AddApiAuthorization();
 
+
             await builder.Build().RunAsync();
         }
+        
     }
 }

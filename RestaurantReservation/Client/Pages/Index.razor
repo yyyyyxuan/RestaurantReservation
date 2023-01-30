@@ -2,14 +2,21 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @inject NavigationManager _navManager
-<h1>Home Page</h1>
-
+<style>
+    div.a {
+        text-align: center;
+    }
+    h1.a {
+        text-align: center;
+    }
+</style>
+<h1 class="a">Home Page</h1>
 <AuthorizeView>
     <Authorized>
         @{ _navManager.NavigateTo("/start/");}
     </Authorized>
     <NotAuthorized>
-        <div class="standard">Please login to start using service</div>
+        <div class="a">Please login to start using service</div>
     </NotAuthorized>
 </AuthorizeView>
 

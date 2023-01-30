@@ -8,7 +8,17 @@
     Back to spotlight
 </a>
 <br/>
-
+<style>
+    #features {
+        position: relative;
+        height: 33px;
+        width: 153px;
+    }
+    #style2{
+        width: 200px;
+        height: 170px;
+    }
+</style>
 @if (Spotlights == null)
 {
     <div>Loading page...</div>
@@ -44,16 +54,14 @@ else
 
                     <td>@restaurant.Name</td>
                     <td>@restaurant.Id</td>
-                    <td>
-                        <div>Tests</div>
-
+                    <td id="style2">
                         <ItemComponent ButtonText="Add"spotlightitem="spotlightitem" OnValidSubmit="@(() => CreateSpotlightItem(restaurant.Id))" />
                         @foreach (var spotlightitem in SpotlightItems)
                         {
 
                             if (spotlightitem.SpotlightId == id & spotlightitem.RestaurantId == restaurant.Id)
                             {
-                                <button class="btn btn-danger" @onclick="@(() => Delete(spotlightitem.Id))" >
+                                <button id="features" class="btn btn-danger" @onclick="@(() => Delete(spotlightitem.Id))">
                                     Remove restaurant
                                 </button>
                                 break;

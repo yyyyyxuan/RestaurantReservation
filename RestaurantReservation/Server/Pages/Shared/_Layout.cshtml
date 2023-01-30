@@ -7,15 +7,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RestaurantReservation.Server</title>
+    <title>@ViewData["Title"] - RestaurantReservation</title>
     <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Identity/css/site.css" />
+    <style>
+        #style1 {
+            background-color: #0a95ff;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light navbar-toggleable-sm bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" href="~/">RestaurantReservation.Server</a>
+        <nav id="style1" class="navbar navbar-expand-sm navbar-light navbar-toggleable-sm border-bottom box-shadow mb-3">
+            <div id="style1" class="container">
+                <a class="navbar-brand" href="~/">RestaurantReservation</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,7 +51,7 @@
     </div>
     <footer class="footer border-top text-muted">
         <div class="container">
-            &copy; 2023 - RestaurantReservation.Server - <a asp-area="" asp-page="Privacy">Privacy</a>
+            &copy; 2023 - RestaurantReservation - <a asp-area="" asp-page="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/Identity/lib/jquery/dist/jquery.min.js"></script>

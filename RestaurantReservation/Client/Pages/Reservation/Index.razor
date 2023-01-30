@@ -101,7 +101,7 @@ else
                 {
                     @foreach (var restaurant in Restaurant)
                     {
-                        @if (restaurant.Id == reservation.Id & restaurant.UserId == _currentUserId)
+                        @if (restaurant.Id == reservation.RestaurantId & restaurant.UserId == _currentUserId)
                         {
                             <tr>
                                 <td>@reservation.RestaurantName </td>
