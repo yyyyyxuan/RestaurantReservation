@@ -13,7 +13,7 @@ namespace RestaurantReservation.Shared.Domain
         public int SpotlightId { get; set; }
         public virtual Restaurant Restaurant { get; set; }
         public int RestaurantId { get; set; }
-        public DateTime ExpireDate { get; set; }
+        public DateTime ExpireDate { get; set; } = DateTime.Now;
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             //throw new NotImplementedException();

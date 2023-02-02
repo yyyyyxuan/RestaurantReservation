@@ -10,20 +10,7 @@
 </a>
 <br />
 <div>
-    <EditForm Model="@spotlight" OnValidSubmit="CreateSpotlight">
-        <DataAnnotationsValidator />
-        <div class="form-group">
-            <label>Spotlight Header: </label>
-            <div>
-                <InputText @bind-Value="spotlight.SpotlightHeader" class="form-control"></InputText>
-                <ValidationMessage For="@(() => spotlight.SpotlightHeader)" />
-            </div>
-        </div>
-        <button type="submit" class="btn btn-success btn-block">
-            Create spotlight
-        </button>
-        <ValidationSummary />
-    </EditForm>
+    <HeaderComponent spotlight="spotlight" ButtonText="Submit" OnValidSubmit="CreateSpotlight" />
 </div>
 
 

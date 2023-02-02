@@ -5,6 +5,10 @@
         height: 33px;
         text-align: center;
     }
+    #feature2{
+        position: relative;
+        top:50px;
+    }
 </style>
 <EditForm Model="@spotlightitem" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
@@ -14,7 +18,7 @@
     <button id="feature" type="submit" class="btn btn-success btn-block">
         @ButtonText restaurant
     </button>
-    <ValidationSummary />
+    <ValidationSummary id="feature2" />
 </EditForm>
 @code {
     [Parameter] public SpotlightItem spotlightitem { get; set; }

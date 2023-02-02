@@ -7,24 +7,20 @@
 @using RestaurantReservation.Client.Model
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
-<h1>@restaurant.Name</h1>
 <button onclick="history.back()" class="btn btn-secondary">
     <span class="oi oi oi-arrow-left"></span>
     Go Back
 </button>
-<a href="start" class="btn btn-secondary">
-    <span class="oi oi oi-arrow-left"></span>
-    Back to restaurants
-</a>
 <br />
+<br />
+<h1>@restaurant.Name</h1>
 <br />
 <FormComponent restaurant="restaurant" Disabled="true" />
 
 @if (_currentUserRole == "CustomerUser" | _currentUserRole == "Administrator")
 {
     <div>
-        <a href="/reservation/create/@id">
+        <a href="/reservation/create/@id" class="btn btn-warning">
             <span class="oi oi-plus"></span>Make a booking
         </a>
     </div>

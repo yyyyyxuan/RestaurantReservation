@@ -1,23 +1,40 @@
 ﻿@page "/spotlight/edit/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
-<EditForm Model="spotlightitem" OnValidSubmit="EditRestaurant" spotlightitem="spotlightitem">
-    <DataAnnotationsValidator />
-    <InputDate @bind-Value="@spotlightitem.ExpireDate" class="form-control" />
-    <ValidationMessage For="@(() => spotlightitem.ExpireDate)" />
-    <button type="submit" class="btn btn-success btn-block">
-        Update date
-    </button>
-    <ValidationSummary />
-</EditForm>
+<a href="spotlight" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to spotlight
+</a>
+<br/>
+<br />
+<style>
+    #style{
+        height:200px;
+        width: 200px;
+    }
+</style>
+<h3>Edit date:</h3>
+<br />
+<div id="style">
+    <EditForm Model="spotlightitem" OnValidSubmit="EditDate" spotlightitem="spotlightitem">
+        <DataAnnotationsValidator />
+        <InputDate @bind-Value="@spotlightitem.ExpireDate" class="form-control" />
+        <ValidationMessage For="@(() => spotlightitem.ExpireDate)" />
+        <button type="submit" class="btn btn-success btn-block">
+            Update date
+        </button>
+        <ValidationSummary />
+    </EditForm>
+</div>
 @code {
     [Parameter] public int id { get; set; }
     SpotlightItem spotlightitem = new SpotlightItem();
     protected async override Task OnParametersSetAsync()
     {
         spotlightitem = await _client.GetFromJsonAsync<SpotlightItem>($"{Endpoints.SpotlightItemEndpoint}/{id}");
+        spotlightitem.ExpireDate = DateTime.Today;
     }
-    async Task EditRestaurant()
+    async Task EditDate()
     {
         await _client.PutAsJsonAsync($"{Endpoints.SpotlightItemEndpoint}/{id}", spotlightitem);
         _navManager.NavigateTo("/spotlight/");

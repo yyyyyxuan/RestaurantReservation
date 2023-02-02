@@ -8,6 +8,7 @@
     Back to spotlight
 </a>
 <br/>
+<br/>
 <style>
     #features {
         position: relative;
@@ -43,7 +44,6 @@ else
         <thead>
             <tr>
                 <th>Restaurants</th>
-                <th>Restaurant ID</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -53,7 +53,6 @@ else
                 <tr>
 
                     <td>@restaurant.Name</td>
-                    <td>@restaurant.Id</td>
                     <td id="style2">
                         <ItemComponent ButtonText="Add"spotlightitem="spotlightitem" OnValidSubmit="@(() => CreateSpotlightItem(restaurant.Id))" />
                         @foreach (var spotlightitem in SpotlightItems)
@@ -87,7 +86,6 @@ else
     private List<Spotlight> Spotlights;
     protected async override Task OnInitializedAsync()
     {
-        spotlightitem.ExpireDate = DateTime.Now;
         SpotlightItems = await _client.GetFromJsonAsync<List<SpotlightItem>>($"{Endpoints.SpotlightItemEndpoint}");
         Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
         Spotlights = await _client.GetFromJsonAsync<List<Spotlight>>($"{Endpoints.SpotlightEndpoint}");

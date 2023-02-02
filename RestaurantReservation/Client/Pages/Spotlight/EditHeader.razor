@@ -1,0 +1,33 @@
+﻿@page "/spotlight/editheader/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+<a href="spotlight" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Back to spotlight
+</a>
+<br />
+<br />
+<style>
+    #style {
+        height: 200px;
+        width: 200px;
+    }
+</style>
+<h3>Edit header:</h3>
+<br />
+<div id="style">
+    <HeaderComponent spotlight="spotlight" ButtonText="Update" OnValidSubmit="UpdateHeader" />
+</div>
+@code {
+    [Parameter] public int id { get; set; }
+    Spotlight spotlight = new Spotlight();
+    protected async override Task OnParametersSetAsync()
+    {
+        spotlight = await _client.GetFromJsonAsync<Spotlight>($"{Endpoints.SpotlightEndpoint}/{id}");
+    }
+    async Task UpdateHeader()
+    {
+        await _client.PutAsJsonAsync($"{Endpoints.SpotlightEndpoint}/{id}", spotlight);
+        _navManager.NavigateTo("/spotlight/");
+    }
+}

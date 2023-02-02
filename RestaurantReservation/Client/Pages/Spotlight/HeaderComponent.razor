@@ -1,0 +1,33 @@
+﻿<style>
+    #feature {
+        position: absolute;
+        width: 150px;
+        height: 33px;
+        text-align: center;
+    }
+
+    #feature2 {
+        position: relative;
+        top: 50px;
+    }
+</style>
+<EditForm Model="@spotlight" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Spotlight Header: </label>
+        <div>
+            <InputText @bind-Value="spotlight.SpotlightHeader" class="form-control"></InputText>
+            <ValidationMessage For="@(() => spotlight.SpotlightHeader)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success btn-block">
+        @ButtonText
+    </button>
+    <ValidationSummary />
+</EditForm>
+@code {
+    [Parameter] public Spotlight spotlight { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+}

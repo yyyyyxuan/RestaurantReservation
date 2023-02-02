@@ -5,19 +5,16 @@
 @inject HttpInterceptorService _interceptor
 @implements IDisposable
 
-
-
+@using System.Security.Claims
+@using RestaurantReservation.Client.Model
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <a href="start" class="btn btn-secondary">
     <span class="oi oi oi-arrow-left"></span>
     Back to menu
 </a>
-@using System.Security.Claims
-@using RestaurantReservation.Client.Model
-@inject AuthenticationStateProvider AuthenticationStateProvider
-
+<br />
+<br />
 <h3>Reservations: </h3>
-<p>UserId: @_currentUserId</p>
-<div>Display list of reservations made by customer</div>
 
 @if (Reservation == null)
 {
@@ -181,7 +178,7 @@ else
     async Task Delete(int reservationId)
     {
         var reservation = Reservation.First(q => q.Id == reservationId);
-        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete reservation {reservation.Id}?");
+        var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete reservation at {reservation.RestaurantName}?");
         if (confirm)
         {
             await _client.DeleteAsync($"{Endpoints.ReservationEndpoint}/{reservationId}");

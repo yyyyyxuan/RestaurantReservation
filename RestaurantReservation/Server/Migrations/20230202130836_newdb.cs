@@ -294,9 +294,9 @@ namespace RestaurantReservation.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "67296bfc-ee03-48e3-8292-05e492d6638c", "CustomerUser", "CUSTOMERUSER" },
-                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "79de1fb9-4480-4e2b-b339-8ad2194f3f90", "Administrator", "ADMINISTRATOR" },
-                    { "e660c1e1-9327-4b4a-a449-da5bb9547d0d", "d31f0814-fbc3-4de6-8425-c0fe25a3ed9a", "RestaurantUser", "RESTAURANTUSER" }
+                    { "bd2bcf0c-20db-474f-8407-5a6b159518bb", "39e25038-b067-4198-8cfd-cd9e64cd8eb3", "CustomerUser", "CUSTOMERUSER" },
+                    { "ad2bcf0c-20db-474f-8407-5a6b159518ba", "dab668a6-d9a0-4d53-a55c-97fb7db8b0a0", "Administrator", "ADMINISTRATOR" },
+                    { "e660c1e1-9327-4b4a-a449-da5bb9547d0d", "9c682a83-f84d-4d8f-9799-8a2f06c62310", "RestaurantUser", "RESTAURANTUSER" }
                 });
 
             migrationBuilder.InsertData(
@@ -304,20 +304,20 @@ namespace RestaurantReservation.Server.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "b29bc510-31a9-409b-b95c-8155bd6413fe", "admin@localhost.com", false, false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAEAACcQAAAAEAuqxzY+E8TsAEtD+XENNzF1rkkqM+q2s612XJ3/SfWcmEFNRWGyanorKQmQjDcUDQ==", null, false, "d5cd34a7-a3e8-40dd-973a-c7a7a25ee147", false, "Admin" },
-                    { "12db73f8-0dd6-493b-b15d-6701880bf36e", 0, "b09d2e42-abac-4a82-a725-3df2f2395bd3", "restaurant@localhost.com", false, false, null, "RESTAURANT@LOCALHOST.COM", "RESTAURANT@LOCALHOST.COM", "AQAAAAEAACcQAAAAEGS+fGJVUumV0O3GdnNlHHjOBl3ziKzjM25RrxuEwU14RsgN0WaIXhSvK/UupJTH5g==", null, false, "f6a73908-fcdd-41d9-94ae-5f054d525e49", false, "restauranttestuser" },
-                    { "ce2cf924-58d3-427f-813a-a6de6bc7400d", 0, "d13fa640-8546-43c2-961a-71d4e3eca06d", "customer@localhost.com", false, false, null, "CUSTOMER@LOCALHOST.COM", "CUSTOMER@LOCALHOST.COM", "AQAAAAEAACcQAAAAECXzO8mdw8JERSjV4R7fhfDmapgxPZPMmo31wtbZlr5mxcMIelnouU3WLD1q8iL4lg==", null, false, "697450de-8c07-4b03-8b57-03cf0c559cd4", false, "customertestuser" }
+                    { "3781efa7-66dc-47f0-860f-e506d04102e4", 0, "33b870fc-b144-4da8-a5d2-cea7765b61fc", "admin@localhost.com", false, false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAEAACcQAAAAEPBIBc9WxPBNZwdoK/0i7SCjVaGHQFY8tLcIFIkzxNf6Mza/Sku9w6swAOLxJg5xeg==", null, false, "0edc38a2-c715-4db7-b997-e16ac7130b99", false, "Admin" },
+                    { "12db73f8-0dd6-493b-b15d-6701880bf36e", 0, "d65858c2-15ca-4d85-8116-90690ca1719c", "restaurant@localhost.com", false, false, null, "RESTAURANT@LOCALHOST.COM", "RESTAURANT@LOCALHOST.COM", "AQAAAAEAACcQAAAAENGYIMMgjhEuL3f0T2pwuhRgha563huvdne9zuwiVONJuPc6Ms12YO9zZ8aBkd9vnw==", null, false, "7e441fc1-d04a-4067-87cd-2a9492bb96b9", false, "restauranttestuser" },
+                    { "ce2cf924-58d3-427f-813a-a6de6bc7400d", 0, "352e21f4-2181-4cd1-8abc-63af14eab7e3", "customer@localhost.com", false, false, null, "CUSTOMER@LOCALHOST.COM", "CUSTOMER@LOCALHOST.COM", "AQAAAAEAACcQAAAAEALUIpNPtTA0b3y6UUGQllcGka/iXEQ0XZ+1qCBNT5h1zkk++XevYY2ZQzybFpQdXA==", null, false, "eabd30e1-59c0-4c9e-9504-89cba562330e", false, "customertestuser" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Restaurants",
                 columns: new[] { "Id", "Category", "CreatedBy", "DateCreated", "DateUpdated", "Description", "Name", "UpdatedBy", "UserId", "UserName" },
-                values: new object[] { 1, "TestCategory", "System", new DateTime(2023, 1, 27, 18, 16, 6, 858, DateTimeKind.Local).AddTicks(1587), new DateTime(2023, 1, 27, 18, 16, 6, 858, DateTimeKind.Local).AddTicks(9303), "TestDesc", "TestRestaurant", "System", "3781efa7-66dc-47f0-860f-e506d04102e4", "Admin" });
+                values: new object[] { 1, "TestCategory", "System", new DateTime(2023, 2, 2, 21, 8, 36, 21, DateTimeKind.Local).AddTicks(5895), new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(3112), "TestDesc", "TestRestaurant", "System", "3781efa7-66dc-47f0-860f-e506d04102e4", "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Spotlights",
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "SpotlightHeader", "UpdatedBy" },
-                values: new object[] { 1, "System", new DateTime(2023, 1, 27, 18, 16, 6, 859, DateTimeKind.Local).AddTicks(6161), new DateTime(2023, 1, 27, 18, 16, 6, 859, DateTimeKind.Local).AddTicks(6166), "Test Header", "System" });
+                values: new object[] { 1, "System", new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(9805), new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(9811), "Test Header", "System" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -332,7 +332,7 @@ namespace RestaurantReservation.Server.Migrations
             migrationBuilder.InsertData(
                 table: "SpotlightItems",
                 columns: new[] { "Id", "CreatedBy", "DateCreated", "DateUpdated", "ExpireDate", "RestaurantId", "SpotlightId", "UpdatedBy" },
-                values: new object[] { 1, "System", new DateTime(2023, 1, 27, 18, 16, 6, 859, DateTimeKind.Local).AddTicks(3816), new DateTime(2023, 1, 27, 18, 16, 6, 859, DateTimeKind.Local).AddTicks(3820), new DateTime(2023, 1, 27, 0, 0, 0, 0, DateTimeKind.Local), 1, 1, "System" });
+                values: new object[] { 1, "System", new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(7545), new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(7548), new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Local), 1, 1, "System" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
