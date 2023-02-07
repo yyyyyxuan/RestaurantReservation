@@ -24,14 +24,21 @@ else
 {
 
 
-    <table class="table table-responsive">
+    <table class="table table-responsive" id="reservationTable">
         <thead>
             <tr>
-                <th>Restaurant Name</th>
+                @if (_currentUserRole == "RestaurantUser")
+                {
+
+                }
+                else
+                {
+                    <th>Restaurant Name</th>
+                }
                 <th>Date</th>
                 <th>TimeSlot</th>
                 <th>Pax</th>
-                @if (_currentUserRole == "Administrator")
+                @if (_currentUserRole == "Administrator" | _currentUserRole == "RestaurantUser")
                 {
                     <th>UserName</th>
                 }
@@ -47,9 +54,19 @@ else
                     {
                         <tr>
                             <td>@reservation.RestaurantName </td>
-                            <td>@reservation.ReservationDate.ToShortDateString()</td>
-                            <td>@reservation.TimeSlot</td>
-                            <td>@reservation.Pax</td>
+                            @if (reservation.ReservationDate.Date < DateTime.Now.Date)
+                            {
+                                <td>Reservation expired</td>
+                                <td> </td>
+                                <td> </td>
+                            }
+                            else
+                            {
+                                <td>@reservation.ReservationDate.ToShortDateString()</td>
+                                <td>@reservation.TimeSlot</td>
+                                <td>@reservation.Pax</td>
+
+                            }
                             <td>
                                 <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
                                     <span class="oi oi-pencil"></span>
@@ -73,9 +90,18 @@ else
                 {
                     <tr>
                         <td>@reservation.RestaurantName </td>
-                        <td>@reservation.ReservationDate.ToShortDateString()</td>
-                        <td>@reservation.TimeSlot</td>
-                        <td>@reservation.Pax</td>
+                        @if (reservation.ReservationDate.Date < DateTime.Now.Date)
+                        {
+                            <td>Reservation Expired</td>
+                            <td> </td>
+                            <td> </td>
+                        }
+                        else
+                        {
+                            <td>@reservation.ReservationDate.ToShortDateString()</td>
+                            <td>@reservation.TimeSlot</td>
+                            <td>@reservation.Pax</td>
+                        }
                         <td>@reservation.UserName</td>
                         <td>
                             <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
@@ -101,10 +127,20 @@ else
                         @if (restaurant.Id == reservation.RestaurantId & restaurant.UserId == _currentUserId)
                         {
                             <tr>
-                                <td>@reservation.RestaurantName </td>
-                                <td>@reservation.ReservationDate.ToShortDateString()</td>
-                                <td>@reservation.TimeSlot</td>
-                                <td>@reservation.Pax</td>
+                                
+                                @if (reservation.ReservationDate.Date < DateTime.Now.Date)
+                                {
+                                    <td>Reservation Expired</td>
+                                    <td> </td>
+                                    <td> </td>
+                                }
+                                else
+                                {
+                                    <td>@reservation.ReservationDate.ToShortDateString()</td>
+                                    <td>@reservation.TimeSlot</td>
+                                    <td>@reservation.Pax</td>
+                                }
+                                <td>@reservation.UserName</td>
                                 <td>
                                     <a href="/reservation/edit/@reservation.Id" class="btn btn-warning">
                                         <span class="oi oi-pencil"></span>
@@ -117,7 +153,6 @@ else
                                     </button>
                                 </td>
                             </tr>
-
                         }
                     }
                 }
@@ -171,9 +206,13 @@ else
         }
 
     }
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        await js.InvokeVoidAsync("AddDataTable", "#reservationTable");
+    }
     public void Dispose()
     {
-        _interceptor.DisposeEvent();
+        js.InvokeVoidAsync("DataTablesDispose", "#reservationTable");
     }
     async Task Delete(int reservationId)
     {

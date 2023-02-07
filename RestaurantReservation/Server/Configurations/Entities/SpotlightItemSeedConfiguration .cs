@@ -16,16 +16,41 @@ namespace RestaurantReservation.Server.Configurations.Entities
                 new SpotlightItem {
                     Id = 1,
                     SpotlightId = 1,
-                    ExpireDate = DateTime.Today,
-                    RestaurantId = 1,
+                    ExpireDate = new DateTime(2023,03,12),
+                    RestaurantId = 2,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",
                     UpdatedBy = "System",
                 }
             );
-        
-           
+            builder.HasData(
+                new SpotlightItem
+                {
+                    Id = 2,
+                    SpotlightId = 1,
+                    ExpireDate = new DateTime(2023, 01, 01),
+                    RestaurantId = 3,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                }
+            );
+            builder.HasData(
+                new SpotlightItem
+                {
+                    Id = 3,
+                    SpotlightId = 1,
+                    ExpireDate = new DateTime(2023, 03, 14),
+                    RestaurantId = 4,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                }
+            );
+
         }
     }
 }

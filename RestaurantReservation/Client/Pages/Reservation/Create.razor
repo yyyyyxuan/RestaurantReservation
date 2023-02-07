@@ -30,7 +30,6 @@
     {
         
         Restaurants = await _client.GetFromJsonAsync<List<Restaurant>>($"{Endpoints.RestaurantEndpoint}");
-        reservation.ReservationDate = DateTime.Now;
         foreach (var restaurant in Restaurants)
         {
             if (restaurant.Id.Equals(id))

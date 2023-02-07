@@ -27,7 +27,6 @@
 <p>Id: @_currentUserId</p>
 <p>Name: @_currentUserName</p>
 <p>Role: @_currentUserRole</p>
-<div>Name: @_currentUserName</div>
 @if (AppUsers == null)
 {
     <div class="alert alert‐info">Loading Accounts...</div>
@@ -72,7 +71,6 @@ else
         if (user.Identity.IsAuthenticated)
         {
             _claims = user.Claims;
-            //_currentUserName = user.Identity.Name;
             if (_claims.Count() > 0)
             {
                 foreach (var claim in _claims)

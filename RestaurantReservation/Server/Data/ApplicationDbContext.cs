@@ -31,6 +31,7 @@ namespace RestaurantReservation.Server.Data
             builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new ReservationSeedConfiguration());
             builder.ApplyConfiguration(new RestaurantSeedConfiguration());
             builder.ApplyConfiguration(new SpotlightItemSeedConfiguration());
             builder.ApplyConfiguration(new SpotlightSeedConfiguration());

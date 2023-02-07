@@ -15,7 +15,7 @@ namespace RestaurantReservation.Server.Configurations.Entities
             builder.HasData(
                 new Spotlight {
                     Id = 1,
-                    SpotlightHeader="Test Header",
+                    SpotlightHeader="Fast Food",
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     CreatedBy = "System",

@@ -152,21 +152,21 @@ namespace RestaurantReservation.Server.Migrations
                         new
                         {
                             Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            ConcurrencyStamp = "39e25038-b067-4198-8cfd-cd9e64cd8eb3",
+                            ConcurrencyStamp = "c93ca134-e484-469e-a57a-cb975e16927b",
                             Name = "CustomerUser",
                             NormalizedName = "CUSTOMERUSER"
                         },
                         new
                         {
                             Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            ConcurrencyStamp = "dab668a6-d9a0-4d53-a55c-97fb7db8b0a0",
+                            ConcurrencyStamp = "1134e23c-a0f2-4bbf-9794-9af94de68af9",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "e660c1e1-9327-4b4a-a449-da5bb9547d0d",
-                            ConcurrencyStamp = "9c682a83-f84d-4d8f-9799-8a2f06c62310",
+                            ConcurrencyStamp = "0089f39c-ce99-46d5-afb3-cff206a22959",
                             Name = "RestaurantUser",
                             NormalizedName = "RESTAURANTUSER"
                         });
@@ -273,6 +273,31 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             UserId = "12db73f8-0dd6-493b-b15d-6701880bf36e",
                             RoleId = "e660c1e1-9327-4b4a-a449-da5bb9547d0d"
+                        },
+                        new
+                        {
+                            UserId = "cdc39beb-763d-4764-8086-d3d2790f98fd",
+                            RoleId = "e660c1e1-9327-4b4a-a449-da5bb9547d0d"
+                        },
+                        new
+                        {
+                            UserId = "d2e65d50-0175-40ae-b91d-449484f6623a",
+                            RoleId = "e660c1e1-9327-4b4a-a449-da5bb9547d0d"
+                        },
+                        new
+                        {
+                            UserId = "86c52720-1b0d-4f59-b660-9d04357e8653",
+                            RoleId = "e660c1e1-9327-4b4a-a449-da5bb9547d0d"
+                        },
+                        new
+                        {
+                            UserId = "d5de43ef-33a1-48c2-ac88-b2d9b4ef6d49",
+                            RoleId = "bd2bcf0c-20db-474f-8407-5a6b159518bb"
+                        },
+                        new
+                        {
+                            UserId = "63320eb6-1c7b-439e-9e4f-99b47a240472",
+                            RoleId = "bd2bcf0c-20db-474f-8407-5a6b159518bb"
                         });
                 });
 
@@ -366,15 +391,15 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "33b870fc-b144-4da8-a5d2-cea7765b61fc",
+                            ConcurrencyStamp = "3374837f-b5dc-4545-ab32-f5200dc83b7d",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPBIBc9WxPBNZwdoK/0i7SCjVaGHQFY8tLcIFIkzxNf6Mza/Sku9w6swAOLxJg5xeg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJzYxGI6ZhkRKwSA3dxPqOOSwFgmn+5/geTswSZVjC1aUY5ys+6znpmn39QoWtjxJQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0edc38a2-c715-4db7-b997-e16ac7130b99",
+                            SecurityStamp = "4aef2571-29cb-4ad5-bc39-736729eb4885",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
@@ -382,15 +407,15 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             Id = "12db73f8-0dd6-493b-b15d-6701880bf36e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d65858c2-15ca-4d85-8116-90690ca1719c",
+                            ConcurrencyStamp = "92c53f02-3c91-41f6-911d-32e98e80b28b",
                             Email = "restaurant@localhost.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "RESTAURANT@LOCALHOST.COM",
                             NormalizedUserName = "RESTAURANT@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENGYIMMgjhEuL3f0T2pwuhRgha563huvdne9zuwiVONJuPc6Ms12YO9zZ8aBkd9vnw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMWCMMPlpTW3UnOARLDx+EmfAyievaqQKMtetMpYIL1GMVLX4CleXQ1MoEL19s3I9w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7e441fc1-d04a-4067-87cd-2a9492bb96b9",
+                            SecurityStamp = "9dea022d-cf5d-431c-a272-2eb8d6107181",
                             TwoFactorEnabled = false,
                             UserName = "restauranttestuser"
                         },
@@ -398,17 +423,97 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             Id = "ce2cf924-58d3-427f-813a-a6de6bc7400d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "352e21f4-2181-4cd1-8abc-63af14eab7e3",
+                            ConcurrencyStamp = "97f47a79-11f3-4256-8f5d-5c08103bfdc1",
                             Email = "customer@localhost.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "CUSTOMER@LOCALHOST.COM",
                             NormalizedUserName = "CUSTOMER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEALUIpNPtTA0b3y6UUGQllcGka/iXEQ0XZ+1qCBNT5h1zkk++XevYY2ZQzybFpQdXA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFVZAHMBLt6aAU5ULTRXGB+ElKJ/EIUMtYB93oNmdcaSlqrvlEJ7C7UtoxgwR+uX/g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eabd30e1-59c0-4c9e-9504-89cba562330e",
+                            SecurityStamp = "4eae867f-e261-431e-9c1b-3f2725d2e244",
                             TwoFactorEnabled = false,
                             UserName = "customertestuser"
+                        },
+                        new
+                        {
+                            Id = "cdc39beb-763d-4764-8086-d3d2790f98fd",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b1ec78a7-d0ad-4b50-9e03-a657fdacf57b",
+                            Email = "kfc@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "KFC@LOCALHOST.COM",
+                            NormalizedUserName = "KFC@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOtOjKuNMGSMWRuM4VFixY731pX+JwXm/KPRFcodHTukExy4Qzn3MP9yBhxg2RowDw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d4d04049-105e-4ece-9141-55ea06ee1f1e",
+                            TwoFactorEnabled = false,
+                            UserName = "KFC"
+                        },
+                        new
+                        {
+                            Id = "d2e65d50-0175-40ae-b91d-449484f6623a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f14cea6a-053f-4a32-95b6-c464f42b5cc9",
+                            Email = "macs@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "MACS@LOCALHOST.COM",
+                            NormalizedUserName = "MACS@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFsrLMb4U5FMfQYXdi/Gjt+OpAmRAwMyWC4t89OadOeGwQuQGiZQ4LIycl/MnNc1jQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "17aa677e-a1cc-4179-a41a-3b34bd71168f",
+                            TwoFactorEnabled = false,
+                            UserName = "MACS"
+                        },
+                        new
+                        {
+                            Id = "86c52720-1b0d-4f59-b660-9d04357e8653",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e75fd51e-be80-4887-9ff7-75db9dab46f3",
+                            Email = "subway@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SUBWAY@LOCALHOST.COM",
+                            NormalizedUserName = "SUBWAY@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJeWCSyLuJRhBeS5nHtJB1M6fmRRaEhvdfo/l/j6+kfc8JASXV6AxF+BCq8ZPACWUQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "0d269921-fbb7-4cb7-8fb2-44f9c0dfd5c6",
+                            TwoFactorEnabled = false,
+                            UserName = "Subway"
+                        },
+                        new
+                        {
+                            Id = "d5de43ef-33a1-48c2-ac88-b2d9b4ef6d49",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "49fed972-831e-4776-adb9-98a596574840",
+                            Email = "John@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JOHN@LOCALHOST.COM",
+                            NormalizedUserName = "JOHN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJiq2uInSpG84+0xqkUObRzfdXmDq5RZITd93An/dzU9KXN/b3xs6c3saFr3hQAjtQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d40194e5-9780-4ecd-bdb1-617fdc219db7",
+                            TwoFactorEnabled = false,
+                            UserName = "John"
+                        },
+                        new
+                        {
+                            Id = "63320eb6-1c7b-439e-9e4f-99b47a240472",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fef9353e-f6a7-44f7-88de-2889366d50f0",
+                            Email = "Peter@localhost.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "PETER@LOCALHOST.COM",
+                            NormalizedUserName = "PETER@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE3zt7KbFqZsy39SpglO9SguvI+KTb9Sl0zvMfkAnZsdxpKfJR7dj6ywvaSYSnrdnw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "045d423d-2796-48bf-a3a0-da5f6b390a42",
+                            TwoFactorEnabled = false,
+                            UserName = "Peter"
                         });
                 });
 
@@ -459,6 +564,38 @@ namespace RestaurantReservation.Server.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Reservations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 143, DateTimeKind.Local).AddTicks(7691),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 143, DateTimeKind.Local).AddTicks(7956),
+                            Pax = "3",
+                            ReservationDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RestaurantId = 2,
+                            RestaurantName = "Kentucky Fried Chicken",
+                            TimeSlot = "1400-1600",
+                            UpdatedBy = "System",
+                            UserId = "d5de43ef-33a1-48c2-ac88-b2d9b4ef6d49",
+                            UserName = "John"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 143, DateTimeKind.Local).AddTicks(9074),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 143, DateTimeKind.Local).AddTicks(9076),
+                            Pax = "4",
+                            ReservationDate = new DateTime(2023, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RestaurantId = 3,
+                            RestaurantName = "Mac Donalds",
+                            TimeSlot = "1200-1400",
+                            UpdatedBy = "System",
+                            UserId = "63320eb6-1c7b-439e-9e4f-99b47a240472",
+                            UserName = "Peter"
+                        });
                 });
 
             modelBuilder.Entity("RestaurantReservation.Shared.Domain.Restaurant", b =>
@@ -503,15 +640,54 @@ namespace RestaurantReservation.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Category = "TestCategory",
+                            Category = "Food",
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 2, 2, 21, 8, 36, 21, DateTimeKind.Local).AddTicks(5895),
-                            DateUpdated = new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(3112),
-                            Description = "TestDesc",
-                            Name = "TestRestaurant",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4253),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4259),
+                            Description = "We sell food",
+                            Name = "Admin's Restaurant",
                             UpdatedBy = "System",
                             UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Fast Food",
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4597),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4601),
+                            Description = "We sell fried chicken",
+                            Name = "Kentucky Fried Chicken",
+                            UpdatedBy = "System",
+                            UserId = "cdc39beb-763d-4764-8086-d3d2790f98fd",
+                            UserName = "KFC"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Fast Food",
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4607),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4607),
+                            Description = "We sell burgers and fries",
+                            Name = "Mac Donalds",
+                            UpdatedBy = "System",
+                            UserId = "d2e65d50-0175-40ae-b91d-449484f6623a",
+                            UserName = "MACS"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "Fast Food",
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4610),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(4611),
+                            Description = "We sell sandwiches",
+                            Name = "Subway",
+                            UpdatedBy = "System",
+                            UserId = "86c52720-1b0d-4f59-b660-9d04357e8653",
+                            UserName = "Subway"
                         });
                 });
 
@@ -546,9 +722,9 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(9805),
-                            DateUpdated = new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(9811),
-                            SpotlightHeader = "Test Header",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 145, DateTimeKind.Local).AddTicks(1268),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 145, DateTimeKind.Local).AddTicks(1275),
+                            SpotlightHeader = "Fast Food",
                             UpdatedBy = "System"
                         });
                 });
@@ -594,10 +770,32 @@ namespace RestaurantReservation.Server.Migrations
                         {
                             Id = 1,
                             CreatedBy = "System",
-                            DateCreated = new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(7545),
-                            DateUpdated = new DateTime(2023, 2, 2, 21, 8, 36, 22, DateTimeKind.Local).AddTicks(7548),
-                            ExpireDate = new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Local),
-                            RestaurantId = 1,
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8820),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8825),
+                            ExpireDate = new DateTime(2023, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RestaurantId = 2,
+                            SpotlightId = 1,
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8931),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8932),
+                            ExpireDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RestaurantId = 3,
+                            SpotlightId = 1,
+                            UpdatedBy = "System"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedBy = "System",
+                            DateCreated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8938),
+                            DateUpdated = new DateTime(2023, 2, 7, 8, 53, 2, 144, DateTimeKind.Local).AddTicks(8939),
+                            ExpireDate = new DateTime(2023, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RestaurantId = 4,
                             SpotlightId = 1,
                             UpdatedBy = "System"
                         });

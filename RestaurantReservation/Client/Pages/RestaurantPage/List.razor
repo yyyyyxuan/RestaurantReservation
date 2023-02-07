@@ -47,14 +47,13 @@ else
                 {
                     <td>@restaurant.UserName</td>
                 }
-                @if (_currentUserRole == "CustomerUser" | _currentUserRole == "Administrator")
-                {
+              
                     <td>
                         <a href="/restaurant/view/@restaurant.Id" class="btn btn-warning">
                             <span class="oi oi-plus"></span>View Restaurant
                         </a>
                     </td>
-                }
+                
             </tr>
             }
         </tbody>

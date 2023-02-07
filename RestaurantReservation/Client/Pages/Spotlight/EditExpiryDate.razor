@@ -32,7 +32,7 @@
     protected async override Task OnParametersSetAsync()
     {
         spotlightitem = await _client.GetFromJsonAsync<SpotlightItem>($"{Endpoints.SpotlightItemEndpoint}/{id}");
-        spotlightitem.ExpireDate = DateTime.Today;
+        spotlightitem.ExpireDate = DateTime.Now;
     }
     async Task EditDate()
     {

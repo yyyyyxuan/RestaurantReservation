@@ -6,6 +6,11 @@
 @using System.Security.Claims
 @using RestaurantReservation.Client.Model
 @inject AuthenticationStateProvider AuthenticationStateProvider
+<button onclick="history.back()" class="btn btn-secondary">
+    <span class="oi oi oi-arrow-left"></span>
+    Go Back
+</button>
+<br />
 <FormComponent ButtonText="Create Restaurant" restaurant="restaurant" OnValidSubmit="@CreateRestaurant" />
 
 @code {

@@ -52,26 +52,30 @@ else
         <tbody>
             @foreach (var spotlight in Spotlights)
             {
-                <tr>
+            <tr>
+                <td>
+                    @spotlight.SpotlightHeader
+                </td>
+                @if (_currentUserRole == "CustomerUser" | _currentUserRole == "RestaurantUser")
+                {
                     <td>
-                        @spotlight.SpotlightHeader
-                    </td>
-                    <td>
-                        @if (SpotlightItems == null)
+
+                        @foreach (var spotlightitem in SpotlightItems)
                         {
-                            <a href="spotlight/createitem/@spotlight.Id">No restaurants added</a>
-                        }
-                        else
-                        {
-                            foreach (var spotlightitem in SpotlightItems)
+                            @if (spotlightitem.SpotlightId == spotlight.Id)
                             {
-                                @if (spotlightitem.SpotlightId == spotlight.Id)
+                                foreach (var restaurant in Restaurants)
                                 {
-                                    foreach (var restaurant in Restaurants)
+                                    if (spotlightitem.RestaurantId == restaurant.Id)
                                     {
-                                        if (spotlightitem.RestaurantId == restaurant.Id)
+                                        @if (spotlightitem.ExpireDate > DateTime.Now)
                                         {
-                                            <div>@restaurant.Name</div>
+                                            <div>
+                                                @restaurant.Name
+                                            </div>
+                                        }
+                                        else
+                                        {
                                         }
                                     }
                                 }
@@ -89,6 +93,53 @@ else
                                 {
                                     if (spotlightitem.RestaurantId == restaurant.Id)
                                     {
+                                        @if (spotlightitem.ExpireDate > DateTime.Now)
+                                        {
+                                            <div>
+                                                <a id="blue" href="restaurant/view/@restaurant.Id">
+                                                    <span class="oi oi-plus"></span>View restaurant
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    </td>
+                }
+
+
+
+                @if (_currentUserRole == "Administrator")
+                {
+                    <td>
+                        @foreach (var spotlightitem in SpotlightItems)
+                        {
+                            @if (spotlightitem.SpotlightId == spotlight.Id)
+                            {
+                                foreach (var restaurant in Restaurants)
+                                {
+                                    if (spotlightitem.RestaurantId == restaurant.Id)
+                                    {
+                                        <div>@restaurant.Name</div>
+                                    }
+                                }
+                            }
+                        }
+                    </td>
+                    <td>
+                        @foreach (var spotlightitem in SpotlightItems)
+                        {
+                            @if (spotlightitem.SpotlightId == spotlight.Id)
+                            {
+                                foreach (var restaurant in Restaurants)
+                                {
+                                    if (spotlightitem.RestaurantId == restaurant.Id)
+                                    {
                                         <div>
                                             <a id="blue" href="restaurant/view/@restaurant.Id">
                                                 <span class="oi oi-plus"></span>View restaurant
@@ -98,52 +149,47 @@ else
                                 }
                             }
                         }
-
                     </td>
                     <td>
-                        @if (_currentUserRole == "Administrator")
-                        {
-                            @foreach (var spotlightitem in SpotlightItems)
-                            {
-                                @if (spotlightitem.SpotlightId == spotlight.Id)
-                                {
-                                    foreach (var restaurant in Restaurants)
-                                    {
-                                        if (spotlightitem.RestaurantId == restaurant.Id)
-                                        {
-                                            @if (spotlightitem.ExpireDate > DateTime.Today)
-                                            {
-                                                
-                                                <div>@spotlightitem.ExpireDate.ToShortDateString()</div>
-                                            }
-                                            else
-                                            {
-                                                
-                                                <div><a href="spotlight/edit/@spotlightitem.Id">Advert Expired, click here to update</a></div>
 
-                                            }
+                        @foreach (var spotlightitem in SpotlightItems)
+                        {
+                            @if (spotlightitem.SpotlightId == spotlight.Id)
+                            {
+                                foreach (var restaurant in Restaurants)
+                                {
+                                    if (spotlightitem.RestaurantId == restaurant.Id)
+                                    {
+                                        @if (spotlightitem.ExpireDate > DateTime.Now)
+                                        {
+
+                                            <div>@spotlightitem.ExpireDate.ToShortDateString()</div>
+                                        }
+                                        else
+                                        {
+
+                                            <div><a href="spotlight/edit/@spotlightitem.Id">Advert Expired, click here to update</a></div>
+
                                         }
                                     }
                                 }
                             }
                         }
-                    </td>
 
-                    @if (_currentUserRole == "Administrator")
-                    {
-                        <td>
-                            <a href="/spotlight/createitem/@spotlight.Id" class="btn btn-warning">
-                                <span class="oi oi-plus"></span>Add restaurant
-                            </a>
-                            <a href="/spotlight/editheader/@spotlight.Id" class="btn btn-warning">
-                                <span class="oi oi-plus"></span>Edit header
-                            </a>
-                            <button class="btn btn-danger" @onclick="@(() => Delete(spotlight.Id))">
-                                <span class="oi oi-delete"></span>
-                            </button>
-                        </td>
-                    }
-                </tr>
+                    </td>
+                    <td>
+                        <a href="/spotlight/createitem/@spotlight.Id" class="btn btn-warning">
+                            <span class="oi oi-plus"></span>Add restaurant
+                        </a>
+                        <a href="/spotlight/editheader/@spotlight.Id" class="btn btn-warning">
+                            <span class="oi oi-plus"></span>Edit header
+                        </a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(spotlight.Id))">
+                            <span class="oi oi-delete"></span>
+                        </button>
+                    </td>
+                }
+            </tr>
             }
         </tbody>
     </table>
